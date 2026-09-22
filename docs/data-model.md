@@ -40,10 +40,13 @@
 
 ## ER-диаграмма
 
+```
 [User] 1 ───< [Booking] >─── 1 [Auditorium]
+
 [User] 1 ───< [Booking] (createdByUserId)
 [User] 1 ───< [Booking] (assigneeUserId, nullable)
 [Auditorium] 1 ───< [Booking] (auditoriumId)
+```
 
 
 Связи словами:
