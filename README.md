@@ -17,17 +17,29 @@
 ## Структура репозитория
 
 SahmantievLab/
+
 ├── README.md
+
 ├── .gitignore
+
 ├── docs/
+
 │ ├── project-proposal.md ← заявка на тему
+
 │ ├── lab-01-requirements.md ← техническое задание
+
 │ ├── architecture.md ← схема архитектуры
+
 │ ├── data-model.md ← модель данных и ER-диаграмма
+
 │ ├── api-contract.md ← контракт API
+
 │ └── requirements-matrix.md ← матрица требований
+
 └── frontend/ ← клиент на Vue 3
+
 └── src/
+
 └── App.vue
 
 ## Запуск клиента (ЛР3)
