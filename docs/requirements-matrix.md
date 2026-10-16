@@ -1,7 +1,7 @@
-# Матрица требований. Тема: Бронирование аудиторий
+# Матрица требований. Тема: Заявки на анализ рекламной кампании
 
 | Требование ЛР1 | Поле или сущность | Запрос | Критерий |
 | :--- | :--- | :--- | :--- |
-| Преподаватель создаёт бронь | Booking, title, auditoriumId, description | POST /api/bookings | 1 |
-| Диспетчер назначает ответственного | assigneeUserId | PATCH /api/bookings/{id}/assignee | 2 |
-| Ответственный переводит в работу | status | PATCH /api/bookings/{id}/status | 3 |
+| Маркетолог создаёт заявку | AnalysisRequest, title, campaignId, description | POST /api/analysis-requests | 1 |
+| Руководитель назначает аналитика | assigneeUserId | PATCH /api/analysis-requests/{id}/assignee | 2 |
+| Аналитик переводит в работу | status | PATCH /api/analysis-requests/{id}/status | 3 |

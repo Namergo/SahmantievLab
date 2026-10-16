@@ -1,34 +1,34 @@
-# Модель данных. Тема: Бронирование аудиторий
+# Модель данных. Тема: Заявки на анализ рекламной кампании
 
 ## Словарь проекта
 
 | Термин курса | Термин моей темы |
 | :--- | :--- |
-| Ticket | Бронь (Booking) |
-| Site | Аудитория (Auditorium) |
+| Ticket | Заявка на анализ (AnalysisRequest) |
+| Site | Рекламная кампания (Campaign) |
 | User | Пользователь (User) |
 
 ## Сущности
 
-### Booking (бронь аудитории) — главный объект
+### AnalysisRequest (заявка на анализ) — главный объект
 
 | Поле | Тип | Описание |
 | :--- | :--- | :--- |
 | id | int, PK | машинный ключ |
-| number | string | человеческий номер брони |
+| number | string | человеческий номер заявки |
 | title | string | заголовок (5–80 символов) |
 | description | string | описание (10–500 символов) |
 | status | string | New, InProgress, Closed, Cancelled |
-| auditoriumId | int, FK → Auditorium.id | ссылка на аудиторию |
+| campaignId | int, FK → Campaign.id | ссылка на кампанию |
 | createdByUserId | int, FK → User.id | кто создал |
-| assigneeUserId | int, FK → User.id, nullable | кто ответственный |
+| assigneeUserId | int, FK → User.id, nullable | кто назначенный аналитик |
 
-### Auditorium (аудитория) — справочник
+### Campaign (рекламная кампания) — справочник
 
 | Поле | Тип | Описание |
 | :--- | :--- | :--- |
 | id | int, PK | машинный ключ |
-| name | string | номер аудитории (например, «А-101») |
+| name | string | название кампании |
 
 ### User (пользователь)
 
@@ -36,25 +36,24 @@
 | :--- | :--- | :--- |
 | id | int, PK | машинный ключ |
 | fullName | string | ФИО или логин |
-| role | string | Teacher, Dispatcher, Responsible |
+| role | string | Marketer, AnalyticsLead, Analyst |
 
 ## ER-диаграмма
 
 ```
-[User] 1 ───< [Booking] >─── 1 [Auditorium]
+[User] 1 ───< [AnalysisRequest] >─── 1 [Campaign]
 
-[User] 1 ───< [Booking] (createdByUserId)
-[User] 1 ───< [Booking] (assigneeUserId, nullable)
-[Auditorium] 1 ───< [Booking] (auditoriumId)
+[User] 1 ───< [AnalysisRequest] (createdByUserId)
+[User] 1 ───< [AnalysisRequest] (assigneeUserId, nullable)
+[Campaign] 1 ───< [AnalysisRequest] (campaignId)
 ```
 
-
 Связи словами:
-- одна аудитория — много броней;
-- один пользователь создаёт много броней;
-- один пользователь может быть назначен на много броней;
-- у новой брони исполнитель может отсутствовать (assigneeUserId = null).
+- одна кампания — много заявок на анализ;
+- один пользователь создаёт много заявок;
+- один пользователь может быть назначен на много заявок;
+- у новой заявки исполнитель может отсутствовать (assigneeUserId = null).
 
 ## Проверка 3НФ
 
-Название аудитории хранится в сущности Auditorium один раз. Booking содержит только внешний ключ auditoriumId. При переименовании аудитории меняется одна строка в справочнике, поэтому текст названия не дублируется в бронях.
+Название кампании хранится в сущности Campaign один раз. AnalysisRequest содержит только внешний ключ campaignId. При переименовании кампании меняется одна строка в справочнике, поэтому текст названия не дублируется в заявках.
