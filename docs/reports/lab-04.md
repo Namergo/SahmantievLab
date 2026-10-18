@@ -15,13 +15,15 @@
 
 ## Схема App.vue
 
+```
 App.vue
 ├── AppHeader ← всегда виден
 └── router-view ← сюда подставляется текущая страница
-
+```
 
 ## Дерево src/
 
+```
 src/
 ├── main.js ← app.use(router)
 ├── App.vue ← AppHeader + router-view
@@ -34,7 +36,7 @@ src/
 ├── RequestList.vue
 ├── RequestNew.vue
 └── Login.vue
-
+```
 
 ## Таблица и данные
 
@@ -46,10 +48,14 @@ src/
 defineProps({
   items: { type: Array, required: true }
 })
+```
 
 RequestList.vue передаёт:
 
+```
 <RequestTable :items="items" />
+```
 
-```md
+## Скриншот /new
+
 ![Страница /new](lab-04-new.png)
