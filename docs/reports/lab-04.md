@@ -16,23 +16,36 @@
 ## Схема App.vue
 
 App.vue
+
 ├── AppHeader ← всегда виден
+
 └── router-view ← сюда подставляется текущая страница
 
 
 ## Дерево src/
 
 src/
+
 ├── main.js ← app.use(router)
+
 ├── App.vue ← AppHeader + router-view
+
 ├── router.js ← три маршрута
+
 ├── requestsStore.js ← единственный общий массив
+
 ├── components/
+
 │ ├── AppHeader.vue
+
 │ └── RequestTable.vue
+
 └── pages/
+
 ├── RequestList.vue
+
 ├── RequestNew.vue
+
 └── Login.vue
 
 
@@ -46,10 +59,14 @@ src/
 defineProps({
   items: { type: Array, required: true }
 })
+```
 
 RequestList.vue передаёт:
 
+```
 <RequestTable :items="items" />
+```
 
 ```md
 ![Страница /new](lab-04-new.png)
+```
