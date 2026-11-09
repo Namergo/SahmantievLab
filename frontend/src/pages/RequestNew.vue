@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { addItem } from '../requestsStore.js'
+import { createRequest } from '../api/requests.js'
 
 const router = useRouter()
 
@@ -11,42 +11,47 @@ const form = ref({
   description: ''
 })
 
-const errors = ref({
-  title: '',
-  campaignId: '',
-  description: ''
-})
+const errors = ref({ title: '', campaignId: '', description: '' })
+const serverError = ref('')
+const isSubmitting = ref(false)
 
-function onCreate() {
+async function onCreate() {
+  if (isSubmitting.value) return
+
   errors.value = { title: '', campaignId: '', description: '' }
+  serverError.value = ''
 
   const title = form.value.title.trim()
   const description = form.value.description.trim()
   const campaignId = form.value.campaignId
 
   let hasError = false
-
   if (title.length < 5 || title.length > 80) {
     errors.value.title = 'Тема: от 5 до 80 символов'
     hasError = true
   }
-
   if (!Number.isInteger(campaignId) || campaignId <= 0) {
     errors.value.campaignId = 'ID кампании: целое число больше 0'
     hasError = true
   }
-
   if (description.length < 10 || description.length > 500) {
     errors.value.description = 'Описание: от 10 до 500 символов'
     hasError = true
   }
-
   if (hasError) return
 
-  addItem({ title, campaignId, description })
-
-  form.value = { title: '', campaignId: 0, description: '' }
-  router.push('/')
+  isSubmitting.value = true
+  try {
+    await createRequest({ title, campaignId, description })
+    form.value = { title: '', campaignId: 0, description: '' }
+    router.push('/')
+  } catch (e) {
+    if (e.status === 400) serverError.value = 'Проверьте поля'
+    else if (e.status === 500) serverError.value = 'Сервер не смог обработать запрос'
+    else serverError.value = 'Нет связи с сервером'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 
@@ -66,7 +71,11 @@ function onCreate() {
       <textarea id="description" v-model="form.description"></textarea>
       <p v-if="errors.description" class="error">{{ errors.description }}</p>
 
-      <button type="submit">Создать</button>
+      <p v-if="serverError" class="error">{{ serverError }}</p>
+
+      <button type="submit" :disabled="isSubmitting">
+        {{ isSubmitting ? 'Создаём…' : 'Создать' }}
+      </button>
     </form>
   </section>
 </template>
